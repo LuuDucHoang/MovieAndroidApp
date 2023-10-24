@@ -26,7 +26,7 @@ import {
 } from "../api/moviedb";
 import { styles, theme } from "../theme";
 import Loading from "../components/loading";
-
+import YouTube from "react-native-youtube";
 const ios = Platform.OS == "ios";
 const topMargin = ios ? "" : " mt-3";
 var { width, height } = Dimensions.get("window");
@@ -48,23 +48,22 @@ export default function MovieScreen() {
     getSimilarMovies(item.id);
   }, [item]);
 
-
   const getMovieDetials = async (id) => {
-    setLoading(true)
+    setLoading(true);
     const data = await fetchMovieDetails(id);
     setLoading(false);
     if (data) {
       setMovie(data);
       const datas = await getFavoriteListMovie();
       if (datas) {
-          datas?.results.map((item) => {
-            if (item.id === data.id) {
-              toggleFavourite(true);
-            }
-          });
+        datas?.results.map((item) => {
+          if (item.id === data.id) {
+            toggleFavourite(true);
+          }
+        });
       }
     }
-    setLoading(false)
+    setLoading(false);
   };
   const getMovieCredits = async (id) => {
     const data = await fetchMovieCredits(id);
@@ -79,7 +78,7 @@ export default function MovieScreen() {
     }
   };
   const postMovie = async () => {
-    const data = await addFavoriteMovie(movie?.id,isFavourite );
+    const data = await addFavoriteMovie(movie?.id, isFavourite);
     toggleFavourite(!isFavourite);
   };
 
@@ -132,6 +131,13 @@ export default function MovieScreen() {
               start={{ x: 0.5, y: 0 }}
               end={{ x: 0.5, y: 1 }}
               className="absolute bottom-0"
+            />
+            <YouTube
+              videoId="KVZ-P-ZI6W4" // The YouTube video ID
+              play // control playback of video with true/false
+              fullscreen // control whether the video should play in fullscreen or inline
+              loop // control whether the video should loop when ended
+             
             />
           </View>
         )}
