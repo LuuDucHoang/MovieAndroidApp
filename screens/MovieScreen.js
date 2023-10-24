@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Platform,
+  StyleSheet,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -25,6 +26,7 @@ import {
   getFavoriteListMovie,
 } from "../api/moviedb";
 import { styles, theme } from "../theme";
+import Video from "react-native-video";
 import Loading from "../components/loading";
 
 const ios = Platform.OS == "ios";
@@ -48,23 +50,22 @@ export default function MovieScreen() {
     getSimilarMovies(item.id);
   }, [item]);
 
-
   const getMovieDetials = async (id) => {
-    setLoading(true)
+    setLoading(true);
     const data = await fetchMovieDetails(id);
     setLoading(false);
     if (data) {
       setMovie(data);
       const datas = await getFavoriteListMovie();
       if (datas) {
-          datas?.results.map((item) => {
-            if (item.id === data.id) {
-              toggleFavourite(true);
-            }
-          });
+        datas?.results.map((item) => {
+          if (item.id === data.id) {
+            toggleFavourite(true);
+          }
+        });
       }
     }
-    setLoading(false)
+    setLoading(false);
   };
   const getMovieCredits = async (id) => {
     const data = await fetchMovieCredits(id);
@@ -79,7 +80,7 @@ export default function MovieScreen() {
     }
   };
   const postMovie = async () => {
-    const data = await addFavoriteMovie(movie?.id,isFavourite );
+    const data = await addFavoriteMovie(movie?.id, isFavourite);
     toggleFavourite(!isFavourite);
   };
 
@@ -133,6 +134,7 @@ export default function MovieScreen() {
               end={{ x: 0.5, y: 1 }}
               className="absolute bottom-0"
             />
+      
           </View>
         )}
       </View>
@@ -190,3 +192,12 @@ export default function MovieScreen() {
     </ScrollView>
   );
 }
+var styless = StyleSheet.create({
+  backgroundVideo: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+  },
+});
