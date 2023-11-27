@@ -23,6 +23,8 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import Loading from "../components/loading";
 import { styles } from "../theme";
+import { HeartIcon } from "react-native-heroicons/solid";
+
 
 const ios = Platform.OS === "ios";
 
@@ -60,15 +62,12 @@ export default function HomeScreen() {
         <StatusBar style="light" />
         <View className="flex-row justify-between items-center mx-4">
           <TouchableOpacity onPress={()=>navigation.navigate('Favarivote')}>
-            <Bars3CenterLeftIcon size="30" strokeWidth={2} color="white" />
+            <HeartIcon size="30" strokeWidth={2} color="white" />
           </TouchableOpacity>
           <Text className="text-white text-3xl font-bold">
             <Text style={styles.text}>M</Text>ovies
           </Text>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <TouchableOpacity>
-              <UserIcon size="30" strokeWidth={2} color="white" />
-            </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate("Search")}>
               <MagnifyingGlassIcon size="30" strokeWidth={2} color="white" />
             </TouchableOpacity>
