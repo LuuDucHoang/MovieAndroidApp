@@ -9,10 +9,28 @@ import {
   TextInput,
   Keyboard,
 } from "react-native";
+import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { FirebaseAuth } from "../FireBaseConfig";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function LoginScreen() {
+  const [auth, setAuth] = useState({
+    email: "",
+    password: "",
+  });
   const navigation = useNavigation();
+  const authen = FirebaseAuth
+
+  const signIn = async ()=> {
+    try {
+      const res = await signInWithEmailAndPassword(authen, auth.email,auth.password)
+      navigation.navigate("Home")
+    } catch (error) {
+        alert('Tên tài khoản hoặc mật khẩu không hợp lệ')
+    }
+  }
+
   return (
     <View
       style={{
@@ -57,6 +75,13 @@ export default function LoginScreen() {
       </View>
       <View style={[style.SectionStyle]}>
         <TextInput
+          value={auth.email}
+          onChangeText={(e)=> setAuth((prev)=> {
+            return {
+              ...prev,
+              email: e
+            }
+          })}
           style={{
             ...style.inputStyle,
           }}
@@ -84,6 +109,13 @@ export default function LoginScreen() {
       </View>
       <View style={[style.SectionStyle]}>
         <TextInput
+          value={auth.password}
+          onChangeText={(e)=> setAuth((prev)=> {
+            return {
+              ...prev,
+              password: e
+            }
+          })}
           style={style.inputStyle}
           placeholder="Nhập mật khẩu" //dummy@abc.com
           placeholderTextColor="#8b9cb5"
@@ -107,16 +139,14 @@ export default function LoginScreen() {
         </Text>
         <Text
           onPress={() => navigation.navigate("Register")}
-          style={{ color: "blue",
-          fontWeight: 800
-          }}
+          style={{ color: "blue", fontWeight: 800 }}
         >
           Đăng ký
         </Text>
       </View>
       <TouchableOpacity
         activeOpacity={0.5}
-        onPress={() => navigation.navigate("Home")}
+        onPress={signIn}
       >
         <Text style={style.buttonStyle}>ĐĂNG NHẬP</Text>
       </TouchableOpacity>

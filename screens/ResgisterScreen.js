@@ -10,20 +10,48 @@ import {
   Keyboard,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
+import { FirebaseAuth } from "../FireBaseConfig";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import React, { useEffect, useState } from "react";
 
 const ResgisterScreen = () => {
   const navigation = useNavigation();
 
+  const [auth, setAuth] = useState({
+    email: "",
+    password: "",
+  });
+  const authen = FirebaseAuth;
+
+  const signUp = async () => {
+    try {
+      const res = await createUserWithEmailAndPassword(
+        authen,
+        auth.email,
+        auth.password
+      );
+      alert('Đăng ký thành công')
+      navigation.navigate("Login");
+    } catch (error) {
+      alert('Tên tài khoản đã tồn tại')
+    }
+  };
   return (
     <View className="flex-1 bg-neutral-800">
       <View>
-        <Text style={{
-          color: '#fff',
-          fontSize: 30,
-          marginTop: 30,
-          marginLeft: 20
-        }}>Đăng ký tài khoản</Text>
+        <Text
+          style={{
+            color: "#fff",
+            fontSize: 30,
+            marginTop: 30,
+            marginLeft: 20,
+          }}
+        >
+          Đăng ký tài khoản
+        </Text>
       </View>
       <View
         style={{
@@ -41,6 +69,15 @@ const ResgisterScreen = () => {
       </View>
       <View style={[style.SectionStyle]}>
         <TextInput
+          value={auth.email}
+          onChangeText={(e) =>
+            setAuth((prev) => {
+              return {
+                ...prev,
+                email: e,
+              };
+            })
+          }
           style={{
             ...style.inputStyle,
           }}
@@ -68,6 +105,15 @@ const ResgisterScreen = () => {
       </View>
       <View style={[style.SectionStyle]}>
         <TextInput
+          value={auth.password}
+          onChangeText={(e) =>
+            setAuth((prev) => {
+              return {
+                ...prev,
+                password: e,
+              };
+            })
+          }
           style={style.inputStyle}
           placeholder="Nhập mật khẩu" //dummy@abc.com
           placeholderTextColor="#8b9cb5"
@@ -117,16 +163,14 @@ const ResgisterScreen = () => {
         </Text>
         <Text
           onPress={() => navigation.navigate("Login")}
-          style={{ color: "blue",
-          fontWeight: 800
-          }}
+          style={{ color: "blue", fontWeight: 800 }}
         >
           Đăng nhập
         </Text>
       </View>
       <TouchableOpacity
         activeOpacity={0.5}
-        onPress={() => navigation.navigate("Login")}
+        onPress={signUp}
       >
         <Text style={style.buttonStyle}>ĐĂNG KÝ</Text>
       </TouchableOpacity>
