@@ -124,7 +124,7 @@ const ResgisterScreen = () => {
           secureTextEntry={true}
         />
       </View>
-      <View
+      {/* <View
         style={{
           marginTop: 10,
           marginLeft: 20,
@@ -149,7 +149,7 @@ const ResgisterScreen = () => {
           keyboardType="default"
           secureTextEntry={true}
         />
-      </View>
+      </View> */}
       <View
         style={{
           display: "flex",
